@@ -365,6 +365,13 @@ class API extends \Piwik\Plugin\API
 
         $dataTable = Archive::createDataTableFromArchive(Archiver::SOCIAL_NETWORKS_RECORD_NAME, $idSite, $period, $date, $segment, $expanded, $flat);
 
+        $dataTable->filter('GroupBy', ['label', function($value) {
+            if ($value === 'instagram') {
+                return 'Instagram';
+            }
+            return $value;
+        }]);
+
         $dataTable->filter('ColumnCallbackAddMetadata', array('label', 'url', function ($name) {
             return Social::getInstance()->getMainUrlFromName($name);
         }));
